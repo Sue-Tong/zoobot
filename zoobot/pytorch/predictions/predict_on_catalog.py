@@ -2,7 +2,7 @@ import logging
 import time
 import datetime
 from typing import List
-import numpy
+import numpy as np
 import pandas as pd
 import torch
 import pytorch_lightning as pl

@@ -64,17 +64,8 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     logging.info('Predictions complete - {}'.format(predictions.shape))
     
     # compute losses
-    losses = []
-    for batch in predict_datamodule.predict_dataloader():
-        with torch.no_grad():
-            output = model(batch)
-        y_pred = torch.softmax(output, dim=-1)
-        y_true = batch["target"]
-        loss = cross_entropy_loss(y_pred, y_true)
-        logging.info("loss")
-        logging.info(loss)
-        losses.append(loss.cpu().numpy())
-    losses = np.concatenate(losses)
+    y_true = predict_datamodule.dataset.labels
+    losses = cross_entropy_loss(torch.tensor(predictions), torch.tensor(y_true)).numpy()
 
     logging.info(f'Saving predictions to {save_loc}')
 

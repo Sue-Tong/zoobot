@@ -90,4 +90,3 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     end = datetime.datetime.fromtimestamp(time.time())
     logging.info('Completed at: {}'.format(end.strftime('%Y-%m-%d %H:%M:%S')))
     logging.info('Time elapsed: {}'.format(end - start))
-    return 12

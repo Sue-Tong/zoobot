@@ -70,6 +70,8 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
         with torch.no_grad():
             output = model(batch)
         loss = model.loss(output, batch)
+        print("loss")
+        print(loss)
         losses.append(loss.cpu().numpy())
     losses = np.concatenate(losses)
 

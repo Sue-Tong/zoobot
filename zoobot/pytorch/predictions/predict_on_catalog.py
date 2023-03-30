@@ -62,16 +62,26 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     # final shape (n_galaxies, n_answers, n_samples)
     predictions = torch.stack([torch.concat(trainer.predict(model, predict_datamodule), dim=0) for n in range(n_samples)], dim=-1).numpy()
     logging.info('Predictions complete - {}'.format(predictions.shape))
+    
+    # compute losses
+    losses = []
+    for batch in predict_datamodule.predict_dataloader():
+        batch = batch.to(device)
+        with torch.no_grad():
+            output = model(batch)
+        loss = model.loss(output, batch)
+        losses.append(loss.cpu().numpy())
+    losses = np.concatenate(losses)
 
     logging.info(f'Saving predictions to {save_loc}')
 
     if save_loc.endswith('.csv'):      # save as pandas df
-        save_predictions.predictions_to_csv(predictions, image_id_strs, label_cols, save_loc)
+        save_predictions.predictions_to_csv(predictions, image_id_strs, label_cols, save_loc,losses=losses)
     elif save_loc.endswith('.hdf5'):
-        save_predictions.predictions_to_hdf5(predictions, image_id_strs, label_cols, save_loc)
+        save_predictions.predictions_to_hdf5(predictions, image_id_strs, label_cols, save_loc,losses=losses)
     else:
         logging.warning('Save format of {} not recognised - assuming csv'.format(save_loc))
-        save_predictions.predictions_to_csv(predictions, image_id_strs, label_cols, save_loc)
+        save_predictions.predictions_to_csv(predictions, image_id_strs, label_cols, save_loclosses=losses)
 
     logging.info(f'Predictions saved to {save_loc}')
 

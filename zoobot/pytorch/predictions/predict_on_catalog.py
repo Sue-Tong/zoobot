@@ -64,6 +64,7 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     logging.info('Predictions complete - {}'.format(predictions.shape))
     
     # compute losses
+    assert(predictions.shape)
     y_true = predict_datamodule.dataset.labels
     losses = cross_entropy_loss(torch.tensor(predictions), torch.tensor(y_true)).numpy()
 

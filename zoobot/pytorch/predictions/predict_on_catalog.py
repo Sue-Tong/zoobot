@@ -37,9 +37,9 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     # with this stage arg, will only use predict_catalog 
     # crucial to specify the stage, or will error (as missing other catalogs)
     predict_datamodule.setup(stage='predict')  
-    # for images in predict_datamodule.predict_dataloader():
-    #     print(images)
-    #     print(images.shape)
+    for images in predict_datamodule.predict_dataloader():
+        print(images)
+        print(images.shape)
 
 
     # set up trainer (again)

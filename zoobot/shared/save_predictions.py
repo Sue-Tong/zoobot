@@ -23,7 +23,7 @@ def predictions_to_hdf5(predictions, id_str, label_cols, save_loc, compression="
 def predictions_to_csv(predictions, id_str, label_cols, save_loc,losses):
     # not recommended - hdf5 is much more flexible and pretty easy to use once you check the package quickstart
     assert save_loc.endswith('.csv')
-    data = [prediction_to_row(predictions[n], id_str[n], label_cols=label_cols,losses[n]) for n in range(len(predictions))]
+    data = [prediction_to_row(predictions[n], id_str[n], label_cols=label_cols,losses[n] for n in range(len(predictions))]
     predictions_df = pd.DataFrame(data)
     logging.info(predictions_df)
     predictions_df.to_csv(save_loc, index=False)

@@ -65,7 +65,6 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     
     # compute losses
     y_true = catalog['ring_fraction']
-    losses = cross_entropy_loss(torch.tensor(predictions.squeeze()), torch.tensor(y_true.squeeze())).numpy()
 
     logging.info(f'Saving predictions to {save_loc}')
 

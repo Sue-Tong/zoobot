@@ -68,7 +68,9 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     for batch in predict_datamodule.predict_dataloader():
         with torch.no_grad():
             output = model(batch)
-        loss = model.loss(output, batch)
+        y_pred = torch.softmax(output, dim=-1)
+        y_true = batch["target"]
+        loss = cross_entropy_loss(y_pred, y_true)
         logging.info("loss")
         logging.info(loss)
         losses.append(loss.cpu().numpy())

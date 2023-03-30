@@ -45,7 +45,7 @@ def prediction_to_row(prediction: np.ndarray, id_str: str, label_cols: List,loss
     
     """
     row = {
-        'id_str': id_str  # may very well be a path to an image, if using an image dataset - just rename later
+        'id_str': "jjjjj"  # may very well be a path to an image, if using an image dataset - just rename later
         'loss':loss
     }
     for n in range(len(label_cols)):

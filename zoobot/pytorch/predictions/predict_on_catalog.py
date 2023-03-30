@@ -66,7 +66,6 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     # compute losses
     losses = []
     for batch in predict_datamodule.predict_dataloader():
-        batch = batch.to(device)
         with torch.no_grad():
             output = model(batch)
         loss = model.loss(output, batch)

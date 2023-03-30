@@ -64,7 +64,23 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     logging.info('Predictions complete - {}'.format(predictions.shape))
     
     # compute losses
-    y_true = catalog['ring_fraction']
+    y_true = torch.tensor(catalog['ring_fraction'])
+    loss = cross_entropy_loss(torch.tensor(y_pred.squeeze()), y_true)
+    
+#     losses = []
+#     y_trues = []  # to store the 1D class labels
+#     for batch in predict_datamodule.predict_dataloader():
+#         with torch.no_grad():
+#             output = model(batch)
+#         y_pred = torch.softmax(output, dim=-1)
+#         y_true = batch["target"]
+#         y_trues.append(y_true.view(-1))  # flatten to 1D tensor
+#         loss = cross_entropy_loss(y_pred, y_true.view(-1))  # convert y_true to 1D tensor
+#         logging.info("loss")
+#         logging.info(loss)
+#         losses.append(loss.cpu().numpy())
+#     losses = np.concatenate(losses)
+#     y_trues = torch.cat(y_trues)  # combine into single 1D tensor
 
     logging.info(f'Saving predictions to {save_loc}')
 

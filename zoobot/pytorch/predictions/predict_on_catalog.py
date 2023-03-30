@@ -38,8 +38,8 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
     # crucial to specify the stage, or will error (as missing other catalogs)
     predict_datamodule.setup(stage='predict')  
     for images in predict_datamodule.predict_dataloader():
-        print(images)
-        print(images.shape)
+        logging.info(images)
+        logging.info(images.shape)
 
 
     # set up trainer (again)
@@ -70,8 +70,8 @@ def predict(catalog: pd.DataFrame, model: pl.LightningModule, n_samples: int, la
         with torch.no_grad():
             output = model(batch)
         loss = model.loss(output, batch)
-        print("loss")
-        print(loss)
+        logging.info("loss")
+        logging.info(loss)
         losses.append(loss.cpu().numpy())
     losses = np.concatenate(losses)
 

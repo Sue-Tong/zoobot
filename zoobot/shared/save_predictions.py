@@ -20,16 +20,16 @@ def predictions_to_hdf5(predictions, id_str, label_cols, save_loc, compression="
         # sometimes throws a "could not lock file" error but still saves fine. I don't understand why
 
 
-def predictions_to_csv(predictions, id_str, label_cols, save_loc):
+def predictions_to_csv(predictions, id_str, label_cols, save_loc,losses):
     # not recommended - hdf5 is much more flexible and pretty easy to use once you check the package quickstart
     assert save_loc.endswith('.csv')
-    data = [prediction_to_row(predictions[n], id_str[n], label_cols=label_cols) for n in range(len(predictions))]
+    data = [prediction_to_row(predictions[n], id_str[n], label_cols=label_cols,losses[n]) for n in range(len(predictions))]
     predictions_df = pd.DataFrame(data)
     # logging.info(predictions_df)
     predictions_df.to_csv(save_loc, index=False)
 
 
-def prediction_to_row(prediction: np.ndarray, id_str: str, label_cols: List):
+def prediction_to_row(prediction: np.ndarray, id_str: str, label_cols: List,loss:str):
     """
     Convert prediction on image into dict suitable for saving as csv
     Predictions are encoded as a json e.g. "[1., 0.9]" for 2 repeat predictions on one galaxy
@@ -46,6 +46,7 @@ def prediction_to_row(prediction: np.ndarray, id_str: str, label_cols: List):
     """
     row = {
         'id_str': id_str  # may very well be a path to an image, if using an image dataset - just rename later
+        'loss':loss
     }
     for n in range(len(label_cols)):
         answer = label_cols[n]

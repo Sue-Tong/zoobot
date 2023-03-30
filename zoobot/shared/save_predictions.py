@@ -44,6 +44,10 @@ def prediction_to_row(prediction: np.ndarray, id_str: str, loss:str, label_cols:
         dict: of the form {'id_str': 'path', 'smooth_pred': "[1., 0.9]", 'bar_pred: "[0.3, 0.24]"}
     
     """
+    row = {
+        'id_str': id_str  # may very well be a path to an image, if using an image dataset - just rename later
+        'loss':loss
+    }
     for n in range(len(label_cols)):
         answer = label_cols[n]
         answer_pred = prediction[n].astype(float)  # (n_samples,) shape

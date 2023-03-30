@@ -29,7 +29,7 @@ def predictions_to_csv(predictions, id_str, label_cols, save_loc,losses):
     predictions_df.to_csv(save_loc, index=False)
 
 
-def prediction_to_row(prediction: np.ndarray, id_str: str, loss:str, label_cols: List,):
+def prediction_to_row(prediction: np.ndarray, id_str: str, loss:str, label_cols: List):
     """
     Convert prediction on image into dict suitable for saving as csv
     Predictions are encoded as a json e.g. "[1., 0.9]" for 2 repeat predictions on one galaxy

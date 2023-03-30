@@ -25,7 +25,7 @@ def predictions_to_csv(predictions, id_str, label_cols, save_loc,losses):
     assert save_loc.endswith('.csv')
     data = [prediction_to_row(predictions[n], id_str[n], label_cols=label_cols,losses[n]) for n in range(len(predictions))]
     predictions_df = pd.DataFrame(data)
-    # logging.info(predictions_df)
+    logging.info(predictions_df)
     predictions_df.to_csv(save_loc, index=False)
 
 
@@ -44,10 +44,6 @@ def prediction_to_row(prediction: np.ndarray, id_str: str, label_cols: List,loss
         dict: of the form {'id_str': 'path', 'smooth_pred': "[1., 0.9]", 'bar_pred: "[0.3, 0.24]"}
     
     """
-    row = {
-        'id_str': "jjjjj"  # may very well be a path to an image, if using an image dataset - just rename later
-        'loss':loss
-    }
     for n in range(len(label_cols)):
         answer = label_cols[n]
         answer_pred = prediction[n].astype(float)  # (n_samples,) shape
